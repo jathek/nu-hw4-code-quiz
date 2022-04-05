@@ -5,8 +5,8 @@ let questions = [
         answer: 0,
     },
     {
-        question: "Color of sky?",
-        choices: ["green", "blue", "red"],
+        question: "Pets allowed at Hogwarts?",
+        choices: ["cats", "owls", "toads", "all of the above"],
         answer: 1,
     },
 ];
@@ -31,13 +31,13 @@ startButton.addEventListener("click", startQuiz);
 function startQuiz(event) {
     let quizChoiceOl = document.createElement("ol");
     quizHeader.innerHTML = questions[0].question;
-    quizChoiceOl.dataset.question = 0;
     quizBody.innerHTML = "";
     quizBody.appendChild(quizChoiceOl);
     for (let i = 0; i < questions[0].choices.length; i++) {
         let choiceLi = document.createElement("li");
         let choiceButton = document.createElement("button");
         choiceButton.dataset.choice = i;
+        choiceButton.dataset.question = 0;
         choiceButton.setAttribute("class", "quiz-choice");
         choiceButton.innerText = questions[0].choices[i];
         quizChoiceOl.appendChild(choiceLi);
@@ -46,19 +46,16 @@ function startQuiz(event) {
 }
 // questions[0].choices[questions[0].answer]
 
-quizBody.addEventListener("click", advanceQuestion);
-function advanceQuestion(event) {
+quizBody.addEventListener("click", advanceQuiz);
+function advanceQuiz(event) {
     if (event.target.matches("button.quiz-choice")) {
         let clickTarget = event.target;
         let currentQuestion = clickTarget.dataset.question;
-
+        let choiceId = clickTarget.dataset.choice;
         currentQuestion++;
         if (currentQuestion < questions.length) {
-            let quizChoiceOl = document.createElement("ul");
-            let choiceID = clickTarget.getAttribute("data-state");
-            console.log(questions[currentQuestion].question);
+            let quizChoiceOl = document.createElement("ol");
             quizHeader.innerHTML = questions[currentQuestion].question;
-            quizChoiceOl.style("list-style", "none;");
             quizBody.innerHTML = "";
             quizBody.appendChild(quizChoiceOl);
             for (
@@ -68,8 +65,9 @@ function advanceQuestion(event) {
             ) {
                 let choiceLi = document.createElement("li");
                 let choiceButton = document.createElement("button");
-                choiceButton.dataset.question = currentQuestion;
                 choiceButton.dataset.choice = i;
+                choiceButton.dataset.question = currentQuestion;
+                choiceButton.setAttribute("class", "quiz-choice");
                 choiceButton.innerText = questions[currentQuestion].choices[i];
                 quizChoiceOl.appendChild(choiceLi);
                 choiceLi.append(choiceButton);
