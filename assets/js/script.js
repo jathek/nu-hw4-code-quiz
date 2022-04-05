@@ -26,7 +26,7 @@ function startQuiz(event) {
     timer = setInterval(function () {
         timerSecondsLeft--;
         timerSpan.innerText = `${timerSecondsLeft} seconds left.`;
-        if (timerSecondsLeft === 0) {
+        if (timerSecondsLeft <= 0) {
             clearInterval(timer);
             timerSpan.innerHTML = "Time expired";
             writeScoreForm();
@@ -94,8 +94,7 @@ function saveScore(event) {
         let currentScore = timerSecondsLeft;
         let nameInput = scoreForm.querySelector("input");
         let name = nameInput.value.trim();
-        let currentRecord = {};
-        currentRecord[currentScore] = name;
+        let currentRecord = {"score": currentScore,"name": name};
         let storedScores = JSON.parse(localStorage.getItem("scores"));
         if (storedScores !== null) {
             scores = storedScores;
