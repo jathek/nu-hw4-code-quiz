@@ -14,14 +14,16 @@ let questions = [
 let quizHeader = document.querySelector(".quiz-header");
 let quizBody = document.querySelector(".quiz-body");
 let quizfooterMessage = document.querySelector(".quiz-footer p");
+let scores = [];
+let timerSecondsLeft = 75;
+let timer;
+let timerSpan = document.querySelector("#timeLeft");
 
 const startButton = document.querySelector("button.start");
 startButton.addEventListener("click", startQuiz);
 function startQuiz(event) {
     // start timer
-    let timerSecondsLeft = 75;
-    let timer = setInterval(function () {
-        let timerSpan = document.querySelector("#timeLeft");
+    timer = setInterval(function () {
         timerSecondsLeft--;
         timerSpan.innerText = `${timerSecondsLeft} seconds left.`;
         if (timerSecondsLeft === 0) {
@@ -31,10 +33,36 @@ function startQuiz(event) {
     }, 1000);
     // create html for first question
     writeQuestion(0);
+    // debug shortcut - REMOVE below
+    // clearInterval(timer);
+    // writeScoreForm();
 }
-// questions[0].choices[questions[0].answer]
 
 quizBody.addEventListener("click", advanceQuiz);
+function advanceQuiz(event) {
+    if (event.target.matches("button.quiz-choice")) {
+        let currentQuestionIndex = event.target.dataset.question;
+        let choiceIndex = event.target.dataset.choice;
+        let currentAnswerIndex = questions[currentQuestionIndex].answer;
+        if (choiceIndex === currentAnswerIndex) {
+            quizfooterMessage.innerText = "Correct!";
+        } else {
+            quizfooterMessage.innerText = "Wrong!";
+            timerSecondsLeft -= 10;
+        }
+        let hideFooter = setTimeout(function () {
+            quizfooterMessage.innerText = "";
+        }, 1000);
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            writeQuestion(currentQuestionIndex);
+        } else {
+            clearInterval(timer);
+            timerSpan.innerText = `${timerSecondsLeft} seconds left.`;
+            writeScoreForm();
+        }
+    }
+}
 function writeQuestion(questionIndex) {
     let quizChoiceOl = document.createElement("ol");
     quizHeader.innerHTML = questions[questionIndex].question;
@@ -51,23 +79,29 @@ function writeQuestion(questionIndex) {
         choiceLi.append(choiceButton);
     }
 }
+function writeScoreForm() {
+    quizHeader.innerHTML = "Submit your score!";
+    quizBody.innerHTML =
+        '<form id="score-form"><input type="text"><button class="score">Submit</button></form>';
+}
 
-function advanceQuiz(event) {
-    if (event.target.matches("button.quiz-choice")) {
-        let currentQuestionIndex = event.target.dataset.question;
-        let choiceIndex = event.target.dataset.choice;
-        let currentAnswerIndex = questions[currentQuestionIndex].answer;
-        if (choiceIndex === currentAnswerIndex) {
-            quizfooterMessage.innerText = "Correct!"
-        } else {
-            quizfooterMessage.innerText = "Wrong!"
+quizBody.addEventListener("submit", saveScore);
+function saveScore(event) {
+    if (event.target.matches("#score-form")) {
+        event.preventDefault();
+        let scoreForm = quizBody.querySelector("#score-form");
+        let currentScore = timerSecondsLeft;
+        let nameInput = scoreForm.querySelector("input");
+        let name = nameInput.value.trim();
+        let currentRecord = {};
+        currentRecord[currentScore] = name;
+        let storedScores = JSON.parse(localStorage.getItem("scores"));
+        if (storedScores !== null) {
+            scores = storedScores;
         }
-        let hideFooter = setTimeout(function () {quizfooterMessage.innerText = ""},1000)
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions.length) {
-            writeQuestion(currentQuestionIndex);
-        } else {
-            console.log(`${currentQuestionIndex} exceeds the questions array.`);
-        }
+        scores.push(currentRecord);
+        localStorage.setItem("scores", JSON.stringify(scores));
+        nameInput.value = "";
+        window.location.href = "./scores.html"
     }
 }
