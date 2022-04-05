@@ -15,7 +15,7 @@ let quizHeader = document.querySelector(".quiz-header");
 let quizBody = document.querySelector(".quiz-body");
 let quizfooterMessage = document.querySelector(".quiz-footer p");
 let scores = [];
-let timerSecondsLeft = 75;
+let timerSecondsLeft = 6;
 let timer;
 let timerSpan = document.querySelector("#timeLeft");
 
@@ -29,6 +29,7 @@ function startQuiz(event) {
         if (timerSecondsLeft === 0) {
             clearInterval(timer);
             timerSpan.innerHTML = "Time expired";
+            writeScoreForm();
         }
     }, 1000);
     // create html for first question
