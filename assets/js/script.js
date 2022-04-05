@@ -7,7 +7,7 @@ let questions = [
     {
         question: "Pets allowed at Hogwarts?",
         choices: ["cats", "owls", "toads", "all of the above"],
-        answer: "1",
+        answer: "3",
     },
 ];
 
@@ -54,10 +54,8 @@ function writeQuestion(questionIndex) {
 
 function advanceQuiz(event) {
     if (event.target.matches("button.quiz-choice")) {
-        let clickTarget = event.target;
-        
-        let currentQuestionIndex = clickTarget.dataset.question;
-        let choiceIndex = clickTarget.dataset.choice;
+        let currentQuestionIndex = event.target.dataset.question;
+        let choiceIndex = event.target.dataset.choice;
         let currentAnswerIndex = questions[currentQuestionIndex].answer;
         if (choiceIndex === currentAnswerIndex) {
             quizfooterMessage.innerText = "Correct!"
