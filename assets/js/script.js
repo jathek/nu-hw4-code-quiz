@@ -1,14 +1,33 @@
 let questions = [
     {
-        question: "Color of grass?",
-        choices: ["green", "blue", "red"],
-        answer: "0",
+        question: "Commonly used data types DO NOT include:",
+        choices: ["strings", "booleans", "alerts", "numbers"],
+        answer: "2",
     },
     {
-        question: "Pets allowed at Hogwarts?",
-        choices: ["cats", "owls", "toads", "all of the above"],
+        question:
+            "The condition in an if/else statement is enclosed within ______.",
+        choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+        answer: "2",
+    },
+    {
+        question:
+            "Arrays in JavaScript can be used to store ______.",
+        choices: ["numbers and strings", "other arrays", "booleans", "all of the above"],
         answer: "3",
     },
+    {
+        question:
+            "String values must be enclosed within ______ when being assigned to variables.",
+        choices: ["commas", "curly brackets", "quotes", "parentheses"],
+        answer: "2",
+    },
+    {
+        question:
+            "A very useful tool used during development and debugging for printing content to the debugger is:",
+        choices: ["console log", "terminal/bash", "for loops", "JavaScript"],
+        answer: "0",
+    }
 ];
 
 let quizHeader = document.querySelector(".quiz-header");
@@ -94,7 +113,7 @@ function saveScore(event) {
         let currentScore = timerSecondsLeft;
         let nameInput = scoreForm.querySelector("input");
         let name = nameInput.value.trim();
-        let currentRecord = {"score": currentScore,"name": name};
+        let currentRecord = { score: currentScore, name: name };
         let storedScores = JSON.parse(localStorage.getItem("scores"));
         if (storedScores !== null) {
             scores = storedScores;
@@ -102,6 +121,6 @@ function saveScore(event) {
         scores.push(currentRecord);
         localStorage.setItem("scores", JSON.stringify(scores));
         nameInput.value = "";
-        window.location.href = "./scores.html"
+        window.location.href = "./scores.html";
     }
 }
