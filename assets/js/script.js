@@ -15,7 +15,7 @@ let quizHeader = document.querySelector(".quiz-header");
 let quizBody = document.querySelector(".quiz-body");
 let quizfooterMessage = document.querySelector(".quiz-footer p");
 let scores = [];
-let timerSecondsLeft = 6;
+let timerSecondsLeft = 75;
 let timer;
 let timerSpan = document.querySelector("#timeLeft");
 
@@ -66,7 +66,7 @@ function advanceQuiz(event) {
 }
 function writeQuestion(questionIndex) {
     let quizChoiceOl = document.createElement("ol");
-    quizHeader.innerHTML = questions[questionIndex].question;
+    quizHeader.innerHTML = `<h2>${questions[questionIndex].question}</h2>`;
     quizBody.innerHTML = "";
     quizBody.appendChild(quizChoiceOl);
     for (let i = 0; i < questions[questionIndex].choices.length; i++) {
@@ -81,7 +81,7 @@ function writeQuestion(questionIndex) {
     }
 }
 function writeScoreForm() {
-    quizHeader.innerHTML = "Submit your score!";
+    quizHeader.innerHTML = "<h2>Submit your score!</h2>";
     quizBody.innerHTML =
         '<form id="score-form"><input type="text"><button class="score">Submit</button></form>';
 }
