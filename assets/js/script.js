@@ -77,10 +77,10 @@ function advanceQuiz(event) {
             quizfooterMessage.innerText = "Wrong!";
             timerSecondsLeft -= 10;
         }
-        // empty footer after 1 second
+        // empty footer after 2 second
         let hideFooter = setTimeout(function () {
             quizfooterMessage.innerText = "";
-        }, 1000);
+        }, 2000);
         // advance currentQuestionIndex and write next question if still within array
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
